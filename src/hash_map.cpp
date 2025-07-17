@@ -16,18 +16,30 @@ int HashMap::_hash(int chave)
 
 void HashMap::listar()
 {
+    bool temInformacao = false;
+
     for (int i = 0; i < TAMANHO_PADRAO; ++i)
     {
         No<Livro> *atual = map[i];
 
         while (atual != nullptr)
         {
-            std::cout << "ID: " << atual->chave << ", Nome: " << atual->valor->nome
-                      << ", Categoria: " << atual->valor->categoria
-                      << ", Autor: " << atual->valor->autor << std::endl;
+            temInformacao = true;
+            Livro *livroAtual = atual->valor;
+
+            std::cout << "ID: " << livroAtual->id << ", Nome: " << livroAtual->nome
+                      << ", Categoria: " << livroAtual->categoria
+                      << ", Autor: " << livroAtual->autor << std::endl;
 
             atual = atual->proximo;
         }
+    }
+
+    if (!temInformacao)
+    {
+        std::cout << "\nNão há livros cadastrados"
+                  << std::endl
+                  << std::endl;
     }
 }
 
@@ -66,4 +78,45 @@ No<Livro> *HashMap::buscar(int chave)
     }
 
     return nullptr;
+}
+
+void HashMap::remover(int chave)
+{
+    int index = _hash(chave);
+    No<Livro> *atual = map[index];
+    No<Livro> *anterior = nullptr;
+
+    while (atual != nullptr)
+    {
+        if (atual->chave == chave)
+        {
+            if (anterior == nullptr)
+            {
+                map[index] = atual->proximo;
+            }
+            else
+            {
+                anterior->proximo = atual->proximo;
+            }
+            delete atual->valor;
+            delete atual;
+            return;
+        }
+        anterior = atual;
+        atual = atual->proximo;
+    }
+}
+
+void HashMap::editar(int chave, Livro *livro)
+{
+    No<Livro> *no = buscar(chave);
+    if (no != nullptr)
+    {
+        no->valor->nome = livro->nome;
+        no->valor->autor = livro->autor;
+    }
+    else
+    {
+        std::cout << "Livro com ID " << chave << " não encontrado." << std::endl;
+    }
 }
