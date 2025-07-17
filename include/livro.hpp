@@ -1,16 +1,11 @@
 #include <string>
-#include "categoria.hpp"
 
-#ifndef LIVRO_HPP
-#define LIVRO_HPP
+#pragma once
 
-class Livro : public Categoria
+struct Livro
 {
-private:
+    int id;
+    std::string nome;
+    std::string categoria = "Livro";
     std::string autor;
-
-public:
-    Livro(int id, std::string nome, std::string categoria, std::string autor);
 };
-
-#endif // LIVRO_HPP
