@@ -1,14 +1,19 @@
 #include <iostream>
 #include "../include/hash_map.hpp"
 
-HashMap::HashMap() {}
+HashMap::HashMap()
+{
+    for (int i = 0; i < TAMANHO_PADRAO; ++i)
+    {
+        map[i] = nullptr;
+    }
+}
 
 int HashMap::_hash(int chave)
 {
     return chave % TAMANHO_PADRAO;
 }
 
-// NÃO TÁ FUNCIONANDO
 void HashMap::listar()
 {
     for (int i = 0; i < TAMANHO_PADRAO; ++i)
@@ -26,7 +31,6 @@ void HashMap::listar()
     }
 }
 
-// NÃO TÁ FUNCIONANDO
 void HashMap::inserir(Livro *livro)
 {
     int index = _hash(livro->id);

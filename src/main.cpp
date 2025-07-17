@@ -26,6 +26,7 @@ int main()
         {
             Livro *livro = new Livro();
             std::cout << "Digite o nome do livro: ";
+            std::cin.ignore();
             std::getline(std::cin, livro->nome);
             std::cout << "Digite o autor do livro: ";
             std::getline(std::cin, livro->autor);
