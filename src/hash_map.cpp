@@ -1,10 +1,27 @@
 #include <iostream>
+#include <string>
 #include "../include/hash_map.hpp"
 
 HashMap::HashMap()
 {
+     proximo_id = 1; // ID começa em 1
     for (int i = 0; i < TAMANHO_PADRAO; ++i)
     {
+        map[i] = nullptr;
+    }
+}
+
+// Destrutor: Libera toda a memória alocada
+HashMap::~HashMap() {
+    std::cout << "\nLimpando memoria..." << std::endl;
+    for (int i = 0; i < TAMANHO_PADRAO; ++i) {
+        No<Livro> *atual = map[i];
+        while (atual != nullptr) {
+            No<Livro> *proximo = atual->proximo;
+            delete atual->valor; // Deleta o objeto Livro
+            delete atual;        // Deleta o nó da lista
+            atual = proximo;
+        }
         map[i] = nullptr;
     }
 }
@@ -16,6 +33,7 @@ int HashMap::_hash(int chave)
 
 void HashMap::listar()
 {
+    std::cout << "\n--- LISTA DE LIVROS ---" << std::endl;
     bool temInformacao = false;
 
     for (int i = 0; i < TAMANHO_PADRAO; ++i)
@@ -43,24 +61,24 @@ void HashMap::listar()
     }
 }
 
-void HashMap::inserir(Livro *livro)
-{
+// Inserir agora atribui o ID automaticamente
+void HashMap::inserir(Livro *livro) {
+    livro->id = this->proximo_id; // Atribui ID
+    this->proximo_id++;          // Incrementa para o próximo
+
     int index = _hash(livro->id);
     No<Livro> *newNode = new No<Livro>{livro->id, livro, nullptr};
 
-    if (map[index] == nullptr)
-    {
+    if (map[index] == nullptr) {
         map[index] = newNode;
-        return;
+    } else {
+        No<Livro> *atual = map[index];
+        while (atual->proximo != nullptr) {
+            atual = atual->proximo;
+        }
+        atual->proximo = newNode;
     }
-
-    No<Livro> *atual = map[index];
-    while (atual->proximo != nullptr)
-    {
-        atual = atual->proximo;
-    }
-
-    atual->proximo = newNode;
+    std::cout << "\nLivro '" << livro->nome << "' inserido com sucesso! ID gerado: " << livro->id << std::endl << std::endl;
 }
 
 No<Livro> *HashMap::buscar(int chave)
@@ -107,16 +125,28 @@ void HashMap::remover(int chave)
     }
 }
 
-void HashMap::editar(int chave, Livro *livro)
-{
+// Editar com busca e atualização no mesmo lugar
+void HashMap::editar(int chave) {
     No<Livro> *no = buscar(chave);
-    if (no != nullptr)
-    {
-        no->valor->nome = livro->nome;
-        no->valor->autor = livro->autor;
-    }
-    else
-    {
-        std::cout << "Livro com ID " << chave << " não encontrado." << std::endl;
+
+    if (no != nullptr) {
+        std::cout << "Editando livro: " << no->valor->nome << " (ID: " << chave << ")" << std::endl;
+        
+        std::string novo_nome;
+        std::string novo_autor;
+
+        std::cout << "Digite o novo nome do livro: ";
+        std::getline(std::cin, novo_nome);
+
+        std::cout << "Digite o novo autor do livro: ";
+        std::getline(std::cin, novo_autor);
+
+        no->valor->nome = novo_nome;
+        no->valor->autor = novo_autor;
+
+        std::cout << "\nLivro editado com sucesso!" << std::endl << std::endl;
+
+    } else {
+        std::cout << "\nLivro com ID " << chave << " nao encontrado." << std::endl << std::endl;
     }
 }
