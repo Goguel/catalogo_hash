@@ -8,7 +8,7 @@ void exibirOpcoes();
 
 int main()
 {
-    HashMap hm; // O construtor é chamado automaticamente
+    HashMap hm; 
     int opcao;
 
     std::cout << "Boas vindas ao gerenciador de livros!" << std::endl;
@@ -18,7 +18,7 @@ int main()
         exibirOpcoes();
         std::cin >> opcao;
 
-        // Validação de entrada para evitar loop infinito se digitar letra
+        
         if (std::cin.fail()) {
             std::cout << "\nEntrada invalida. Por favor, digite um numero.\n" << std::endl;
             std::cin.clear();
@@ -26,17 +26,17 @@ int main()
             continue;
         }
 
-        // Limpa o buffer de entrada do std::cin antes de usar std::getline
+        
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
          switch (opcao)
         {
-            case 1: // Listar
+            case 1: 
             {
                 hm.listar();
                 break;
             }
-            case 2: // Inserir
+            case 2: 
             {
                 Livro *livro = new Livro();
                 std::cout << "Digite o nome do livro: ";
@@ -48,7 +48,7 @@ int main()
                 hm.inserir(livro);
                 break;
             }
-            case 3: // Buscar
+            case 3: 
             {
                 int id_busca;
                 std::cout << "Digite o ID do livro a ser buscado: ";
@@ -67,7 +67,7 @@ int main()
                 }
                 break; 
             }
-            case 4: // Remover
+            case 4: 
             {
                 int id_remover;
                 std::cout << "Digite o ID do livro a ser removido: ";
@@ -75,21 +75,21 @@ int main()
                 hm.remover(id_remover);
                 break;
             }
-            case 5: // Editar
+            case 5: 
             {
                 int id_editar;
                 std::cout << "Digite o ID do livro a ser editado: ";
                 std::cin >> id_editar;
 
-                // Ela limpa o '\n' deixado pelo "cin >>" antes de chamar a função editar, senão, o '\n' vai para dentro da função.
+                
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 hm.editar(id_editar);
                 break;
             }
-            case 6: // Sair
+            case 6: 
             {
                 std::cout << "Saindo do programa..." << std::endl;
-                return 0; // Sai do programa
+                return 0; 
             }
             default:
             {

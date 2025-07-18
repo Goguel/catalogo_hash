@@ -4,22 +4,22 @@
 
 HashMap::HashMap()
 {
-     proximo_id = 1; // ID começa em 1
+     proximo_id = 1; 
     for (int i = 0; i < TAMANHO_PADRAO; ++i)
     {
         map[i] = nullptr;
     }
 }
 
-// Destrutor: Libera toda a memória alocada
+
 HashMap::~HashMap() {
     std::cout << "\nLimpando memoria..." << std::endl;
     for (int i = 0; i < TAMANHO_PADRAO; ++i) {
         No<Livro> *atual = map[i];
         while (atual != nullptr) {
             No<Livro> *proximo = atual->proximo;
-            delete atual->valor; // Deleta o objeto Livro
-            delete atual;        // Deleta o nó da lista
+            delete atual->valor; 
+            delete atual;        
             atual = proximo;
         }
         map[i] = nullptr;
@@ -61,10 +61,10 @@ void HashMap::listar()
     }
 }
 
-// Inserir agora atribui o ID automaticamente
+
 void HashMap::inserir(Livro *livro) {
-    livro->id = this->proximo_id; // Atribui ID
-    this->proximo_id++;          // Incrementa para o próximo
+    livro->id = this->proximo_id; 
+    this->proximo_id++;          
 
     int index = _hash(livro->id);
     No<Livro> *newNode = new No<Livro>{livro->id, livro, nullptr};
@@ -125,7 +125,7 @@ void HashMap::remover(int chave)
     }
 }
 
-// Editar com busca e atualização no mesmo lugar
+
 void HashMap::editar(int chave) {
     No<Livro> *no = buscar(chave);
 
